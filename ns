@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# ns -- NewScript, create a new bash script with a template
+if [[ $# -eq 1 ]]; then
+	file="$1"
+	file_header_fmt_str="%-14s: %s"
+
+    (cat <<EOF
+#!/usr/bin/env bash
+# 
+# ${file%.*} -- THE SYNOPSIS OF THE SCRIPT
+# 
+# Copyright $(date +'%Y') Haibo Qiu. All rights reserved.
+# 
+# $(printf "$file_header_fmt_str" "Creator" "Haibo Qiu")
+# $(printf "$file_header_fmt_str" "Created" "$(date +'%Y-%m-%d %H:%M:%S%z')")
+# $(printf "$file_header_fmt_str" "Last Modifier" "Haibo Qiu")
+# $(printf "$file_header_fmt_str" "Last Modified" "$(date +'%Y-%m-%d %H:%M:%S%z')")
+#  
+# 
+EOF
+    ) >"$file"
+
+    [[ $? -eq 0 ]] && chmod u+x "$file"
+    #[[ $? -eq 0 ]] && vim +"$(wc -l "$file" |awk '{print $1}')" "$file"
+    [[ $? -eq 0 ]] && vim "+call cursor(3,3)" "$file"
+fi
